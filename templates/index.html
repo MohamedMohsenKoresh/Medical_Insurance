@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>توقع تكلفة التأمين الطبي</title>
+    <style>
+        body { font-family: Arial; background:#f2f7fa; display:flex; justify-content:center; align-items:flex-start; flex-direction:column; padding:20px; }
+        .container { background:white; padding:30px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); width:600px; }
+        h2 { text-align:center; color:#333; }
+        form { display:flex; flex-direction:column; }
+        input[type=file] { margin:10px 0; }
+        input[type=submit], .download-btn {
+            background:#007bff; color:white; font-weight:bold; padding:10px; border:none; border-radius:5px; cursor:pointer; margin-top:10px; text-align:center; text-decoration:none;
+        }
+        input[type=submit]:hover, .download-btn:hover { background:#0056b3; }
+        table { margin-top:20px; border-collapse:collapse; width:100%; }
+        th, td { border:1px solid #ccc; padding:8px; text-align:center; }
+        th { background:#007bff; color:white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>توقع تكلفة التأمين الطبي</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv,.xlsx" required>
+            <input type="submit" value="توقع كل البيانات">
+        </form>
+
+        {% if predictions is not none and not predictions.empty %}
+            <h3>نتائج التنبؤ:</h3>
+            <table>
+                <tr>
+                    {% for col in predictions.columns %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in predictions.values %}
+                <tr>
+                    {% for val in row %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            <a class="download-btn" href="/download">تحميل النتائج كـ CSV</a>
+        {% endif %}
+    </div>
+</body>
+</html>
